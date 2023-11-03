@@ -2,6 +2,7 @@ from pydantic import BaseModel
 
 
 class TypeBase(BaseModel):
+    id: int
     name: str
 
 
@@ -10,7 +11,7 @@ class TypeCreate(TypeBase):
 
 
 class Type(TypeBase):
-    name: str
+    id: int
 
     class Config:
         orm_mode = True
