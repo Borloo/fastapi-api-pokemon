@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, List
 
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -69,3 +69,8 @@ def update_skill(skill_id: int, skill: schemas.SkillCreate, db: Session = Depend
     if db_skill:
         return db_skill
     raise HTTPException(status_code=404, detail="Skill not found")
+
+
+@app.get("/api/pokemons", response_model=List[schemas.Pokemon])
+def get_pokemons(db: Session = Depends(get_db)):
+    return crud.get_pokemons(db)
