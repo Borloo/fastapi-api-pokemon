@@ -61,3 +61,11 @@ def create_skill(skill: schemas.SkillCreate, db: Session = Depends(get_db)):
 @app.get("/api/skills/", response_model=list[schemas.Skill])
 def get_skills(db: Session = Depends(get_db)):
     return crud.get_skills(db)
+
+
+@app.put("/api/skill/{skill_id}", response_model=schemas.Skill)
+def update_skill(skill_id: int, skill: schemas.SkillCreate, db: Session = Depends(get_db)):
+    db_skill = crud.update_skill(db, skill_id, skill)
+    if db_skill:
+        return db_skill
+    raise HTTPException(status_code=404, detail="Skill not found")
