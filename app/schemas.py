@@ -15,3 +15,23 @@ class Type(TypeBase):
 
     class Config:
         orm_mode = True
+
+
+class SkillBase(BaseModel):
+    name: str
+    description: str
+    power: int
+    accurency: int
+    life_max: int
+    type_name: str
+
+
+class SkillCreate(SkillBase):
+    pass
+
+
+class Skill(SkillBase):
+    id: int
+
+    class Config:
+        orm_mode = True
