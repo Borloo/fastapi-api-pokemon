@@ -48,3 +48,11 @@ def update_type(id_type: int, type: schemas.TypeCreate, db: Session = Depends(ge
     if db_type is None:
         raise HTTPException(status_code=404, detail="Type not found")
     return db_type
+
+
+@app.post("/db/skill/", response_model=schemas.Skill)
+def create_skill(skill: schemas.SkillCreate, db: Session = Depends(get_db)):
+    db_skill = crud.create_skill(db, skill)
+    if db_skill:
+        return db_skill
+    raise HTTPException(status_code=404, detail="Skill already exist")

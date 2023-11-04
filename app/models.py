@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 
 from app.database import Base
@@ -9,17 +9,21 @@ class Type(Base):
 
     id = Column(Integer, unique=True, index=True, primary_key=True)
     name = Column(String, unique=True, index=True)
+    skills = relationship("Skill", back_populates="type")
 
 
 class Skill(Base):
     __tablename__ = "Skill"
 
-    name = Column(String, unique=True, primary_key=True)
-    description = Column(String)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
+    name = Column(String, unique=True, nullable=False)
+    description = Column(Text)
     power = Column(Integer)
     accurency = Column(Integer)
     life_max = Column(Integer)
-    # type_name = relationship("Type", back_populates="types")
+    type_name = Column(String, ForeignKey("Type.name"))
+
+    type = relationship("Type", back_populates="skills")
 
 
 class Pokemon(Base):
