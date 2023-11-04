@@ -16,6 +16,10 @@ def get_types(db: Session, skip: int = 0, limit: int = 10):
     return db.query(models.Type).offset(skip).limit(limit).all()
 
 
+def get_skills(db: Session, skip: int = 0, limit: int = 10):
+    return db.query(models.Skill).offset(skip).limit(limit).all()
+
+
 def get_skill_by_name(db: Session, name_skill: str):
     return db.query(models.Skill).filter(models.Skill.name == name_skill).first()
 

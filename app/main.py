@@ -56,3 +56,8 @@ def create_skill(skill: schemas.SkillCreate, db: Session = Depends(get_db)):
     if db_skill:
         return db_skill
     raise HTTPException(status_code=404, detail="Skill already exist")
+
+
+@app.get("/api/skills/", response_model=list[schemas.Skill])
+def get_skills(db: Session = Depends(get_db)):
+    return crud.get_skills(db)
