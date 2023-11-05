@@ -74,3 +74,11 @@ def update_skill(skill_id: int, skill: schemas.SkillCreate, db: Session = Depend
 @app.get("/api/pokemons", response_model=List[schemas.Pokemon])
 def get_pokemons(db: Session = Depends(get_db)):
     return crud.get_pokemons(db)
+
+
+@app.get("/api/pokemon/{pokedex_id}", response_model=schemas.Pokemon)
+def get_pokemon_by_id(pokedex_id: int, db: Session = Depends(get_db)):
+    db_pokemon = crud.get_pokemon_by_id(db, pokedex_id)
+    if db_pokemon:
+        return db_pokemon
+    raise HTTPException(status_code=404, detail="Pokemon not found")

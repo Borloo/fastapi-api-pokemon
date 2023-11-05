@@ -20,16 +20,20 @@ def get_skills(db: Session, skip: int = 0, limit: int = 10):
     return db.query(models.Skill).offset(skip).limit(limit).all()
 
 
-def get_pokemons(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Pokemon).offset(skip).limit(limit).all()
-
-
 def get_skill_by_name(db: Session, name_skill: str):
     return db.query(models.Skill).filter(models.Skill.name == name_skill).first()
 
 
 def get_skill_by_id(db: Session, skill_id: int):
     return db.query(models.Skill).filter(models.Skill.id == skill_id).first()
+
+
+def get_pokemons(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Pokemon).offset(skip).limit(limit).all()
+
+
+def get_pokemon_by_id(db: Session, pokedex_id: int):
+    return db.query(models.Pokemon).filter(models.Pokemon.pokedex_id == pokedex_id).first()
 
 
 def create_type(db: Session, type: schemas.TypeCreate):

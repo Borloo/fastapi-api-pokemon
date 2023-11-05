@@ -56,3 +56,6 @@ class PokemonCreate(PokemonBase):
 class Pokemon(PokemonBase):
     types: List[Type] = []
     skills: List[Skill] = []
+
+    class Config:
+        orm_mode = True
