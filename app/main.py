@@ -1,7 +1,7 @@
 from typing import Union, List
 
 from fastapi import FastAPI, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from app import models, schemas, crud
 from app.database import engine, SessionLocal
@@ -81,4 +81,20 @@ def get_pokemon_by_id(pokedex_id: int, db: Session = Depends(get_db)):
     db_pokemon = crud.get_pokemon_by_id(db, pokedex_id)
     if db_pokemon:
         return db_pokemon
+    raise HTTPException(status_code=404, detail="Pokemon not found")
+
+
+@app.post("/api/pokemon", response_model=schemas.Pokemon)
+def create_pokemon(pokemon: schemas.PokemonCreate, db: Session = Depends(get_db)):
+    db_pokemon = crud.create_pokemon(db, pokemon)
+    if db_pokemon:
+        return db_pokemon
+    raise HTTPException(status_code=404, detail="Pokemon already exist")
+
+
+@app.delete("/api/pokemon/{pokedex_id}", response_model=schemas.Pokemon)
+def delete_pokemon(pokedex_id: int, db: Session = Depends(get_db)):
+    deleted_pokemon = crud.delete_pokemon_by_id(db, pokedex_id)
+    if deleted_pokemon:
+        return deleted_pokemon
     raise HTTPException(status_code=404, detail="Pokemon not found")

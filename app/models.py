@@ -7,16 +7,16 @@ from app.database import Base
 pokemons_types = Table(
     "pokemons_types",
     Base.metadata,
-    Column("pokemon_id", Integer, ForeignKey("Pokemon.pokedex_id")),
-    Column("type_id", Integer, ForeignKey("Type.id"))
+    Column("pokemon_id", Integer, ForeignKey("Pokemon.pokedex_id"), primary_key=True),
+    Column("type_id", Integer, ForeignKey("Type.id"), primary_key=True)
 )
 
 
 pokemons_skills = Table(
     "pokemons_skills",
     Base.metadata,
-    Column("pokemon_id", Integer, ForeignKey("Pokemon.pokedex_id")),
-    Column("skill_id", Integer, ForeignKey("Skill.id"))
+    Column("pokemon_id", Integer, ForeignKey("Pokemon.pokedex_id"), primary_key=True),
+    Column("skill_id", Integer, ForeignKey("Skill.id"), primary_key=True)
 )
 
 
