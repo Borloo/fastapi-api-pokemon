@@ -1,9 +1,10 @@
 # fastapi-api-pokemon
 
-Dans le contexte de mes études en Master Chef de Projet Ingénierie Logiciel, dans le cadre du module Python et Node.js
-nous devons créer une API avec une technologie libre, mais basé sur Python. Le sujet du projet est de créer une API basé
-sur pokemon, comprenant les tables : Pokemon, Skill et Type, et en table de jointure : pokemons_types et 
-pokemons_skills. J'ai choisi FASTAPI pour sa simplicité de prise en main et sa documentation exhaustive.
+Dans le cadre de mon Master en Chef de Projet Ingénierie Logicielle, j'ai entrepris la création d'une API basée sur 
+Python. Ce projet s'articule autour de l'univers Pokémon, avec des tables principales telles que Pokémon, Compétences 
+(Skills) et Types, ainsi que des tables de jointure (pokemons_types et pokemons_skills). Pour mener à bien ce projet, 
+j'ai choisi FASTAPI en raison de sa simplicité d'utilisation et de sa documentation exhaustive. Cette technologie 
+facilite grandement le développement de l'API.
 
 ## Outils et technos utilisées
 
@@ -240,7 +241,7 @@ def update_pokemon(pokedex_id: int, pokemon: schemas.PokemonCreate, db: Session 
 
 ## Tester l'API
 
-Comme présenter au début, pour tester ce projet il est possible d'utiliser Postamn, un outil très pratique qui permet d'essayer les différentes requêtes.<br>
+Comme présenter au début, pour tester ce projet il est possible d'utiliser Postman, un outil très pratique qui permet d'essayer les différentes requêtes.<br>
 Vous trouverez ici la [documentation de l'API Pokemon](https://documenter.getpostman.com/view/30768194/2s9YXfcih5)
 
 Maxime Etcheverria
