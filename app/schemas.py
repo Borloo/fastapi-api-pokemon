@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List
 
 
 class TypeBase(BaseModel):
@@ -32,6 +33,29 @@ class SkillCreate(SkillBase):
 
 class Skill(SkillBase):
     id: int
+
+    class Config:
+        orm_mode = True
+
+
+class PokemonBase(BaseModel):
+    pokedex_id: int
+    name: str
+    size: float
+    weight: float
+    basic_stats: float
+    image: str
+    types: List[int]
+    skills: List[int]
+
+
+class PokemonCreate(PokemonBase):
+    pass
+
+
+class Pokemon(PokemonBase):
+    types: List[Type] = []
+    skills: List[Skill] = []
 
     class Config:
         orm_mode = True
