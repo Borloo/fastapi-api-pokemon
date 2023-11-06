@@ -98,3 +98,11 @@ def delete_pokemon(pokedex_id: int, db: Session = Depends(get_db)):
     if deleted_pokemon:
         return deleted_pokemon
     raise HTTPException(status_code=404, detail="Pokemon not found")
+
+
+@app.put("/api/pokemon/{pokedex_id}", response_model=schemas.Pokemon)
+def update_pokemon(pokedex_id: int, pokemon: schemas.PokemonCreate, db: Session = Depends(get_db)):
+    db_pokemon = crud.update_pokemon_by_id(db, pokedex_id, pokemon)
+    if db_pokemon:
+        return db_pokemon
+    raise HTTPException(status_code=404, detail="Pokemon not found")

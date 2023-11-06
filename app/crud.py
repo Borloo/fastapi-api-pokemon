@@ -18,7 +18,7 @@ def get_types(db: Session, skip: int = 0, limit: int = 10):
     return db.query(models.Type).offset(skip).limit(limit).all()
 
 
-def get_types_by_pokemon(db: Session, pokemon_types: List[models.Type]):
+def get_types_by_pokemon(db: Session, pokemon_types: List[int]):
     return db.query(models.Type).filter(models.Type.id.in_(pokemon_types)).all()
 
 
@@ -34,7 +34,7 @@ def get_skill_by_id(db: Session, skill_id: int):
     return db.query(models.Skill).filter(models.Skill.id == skill_id).first()
 
 
-def get_skills_by_pokemon(db: Session, pokemon_skills: List[models.Skill]):
+def get_skills_by_pokemon(db: Session, pokemon_skills: List[int]):
     return db.query(models.Skill).filter(models.Skill.id.in_(pokemon_skills)).all()
 
 
@@ -115,5 +115,23 @@ def delete_pokemon_by_id(db: Session, pokedex_id: int):
     if db_pokemon:
         db.delete(db_pokemon)
         db.commit()
+        return db_pokemon
+    return None
+
+
+def update_pokemon_by_id(db: Session, pokedex_id: int, pokemon: schemas.PokemonCreate):
+    db_pokemon = get_pokemon_by_id(db, pokedex_id)
+    db_types = get_types_by_pokemon(db, pokemon.types)
+    db_skills = get_skills_by_pokemon(db, pokemon.skills)
+    if db_pokemon or not db_types or not db_skills:
+        db_pokemon.name = pokemon.name
+        db_pokemon.size = pokemon.size
+        db_pokemon.weight = pokemon.weight
+        db_pokemon.basic_stats = pokemon.basic_stats
+        db_pokemon.image = pokemon.image
+        db_pokemon.types = db_types
+        db_pokemon.skills = db_skills
+        db.commit()
+        db.refresh(db_pokemon)
         return db_pokemon
     return None
