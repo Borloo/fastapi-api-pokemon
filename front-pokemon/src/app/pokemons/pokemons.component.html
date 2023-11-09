@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h1>Pokemons</h1>
+    </div>
+    <div class="card-body">
+      <div class="row container-filters">
+        <div class="col-md-2">
+          <h3 class="filters-title">Filter by type: </h3>
+        </div>
+        <div class="col-md-4">
+          <p>liste des types</p>
+        </div>
+      </div>
+      <div class="row container-pokemons">
+        <div class="table-responsive">
+          <table class="table" *ngIf="pokemons.length">
+            <thead>
+              <tr>
+                <th>Pokedex ID</th>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Weight</th>
+                <th>Basic stats</th>
+                <th>Types</th>
+                <th>Skills</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pokemon of filteredPokemons">
+                <td>{{pokemon.pokedex_id}}</td>
+                <td>{{pokemon.name}}</td>
+                <td>{{pokemon.size}}</td>
+                <td>{{pokemon.weight}}</td>
+                <td>{{pokemon.basic_stats}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
