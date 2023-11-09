@@ -95,6 +95,11 @@ def update_skill(db: Session, skill_id: int, skill: schemas.SkillCreate):
 
 
 def create_pokemon(db: Session, pokemon: schemas.PokemonCreate):
+    # Checks :
+    # - Pokemon with a same name exist
+    # - Pokemon with a same pokedex id exist
+    # - Types exist
+    # - Skills exist
     db_pokemon_name = get_pokemon_by_name(db, pokemon.name)
     db_pokemon_id = get_pokemon_by_id(db, pokemon.pokedex_id)
     db_types = get_types_by_pokemon(db, pokemon.types)
@@ -102,6 +107,7 @@ def create_pokemon(db: Session, pokemon: schemas.PokemonCreate):
     if db_pokemon_name or db_pokemon_id or not db_types or not db_skills:
         return None
     db_pokemon: schemas.PokemonCreate = models.Pokemon(**pokemon.model_dump(exclude={"types", "skills"}))
+    # Insert object, not ids
     db_pokemon.types = db_types
     db_pokemon.skills = db_skills
     db.add(db_pokemon)
@@ -111,6 +117,7 @@ def create_pokemon(db: Session, pokemon: schemas.PokemonCreate):
 
 
 def delete_pokemon_by_id(db: Session, pokedex_id: int):
+    # Check pokedex id pokemon exist
     db_pokemon = get_pokemon_by_id(db, pokedex_id)
     if db_pokemon:
         db.delete(db_pokemon)
@@ -120,15 +127,21 @@ def delete_pokemon_by_id(db: Session, pokedex_id: int):
 
 
 def update_pokemon_by_id(db: Session, pokedex_id: int, pokemon: schemas.PokemonCreate):
+    # Checks
+    # Pokedex id pokemon exist
+    # Types exist
+    # Skills exist
     db_pokemon = get_pokemon_by_id(db, pokedex_id)
     db_types = get_types_by_pokemon(db, pokemon.types)
     db_skills = get_skills_by_pokemon(db, pokemon.skills)
     if db_pokemon or not db_types or not db_skills:
+        # refresh all attributs
         db_pokemon.name = pokemon.name
         db_pokemon.size = pokemon.size
         db_pokemon.weight = pokemon.weight
         db_pokemon.basic_stats = pokemon.basic_stats
         db_pokemon.image = pokemon.image
+        # Insert objects, not ids
         db_pokemon.types = db_types
         db_pokemon.skills = db_skills
         db.commit()
