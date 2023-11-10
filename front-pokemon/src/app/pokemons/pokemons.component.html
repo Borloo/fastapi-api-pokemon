@@ -1,0 +1,76 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h1>Pokemons</h1>
+    </div>
+    <div class="card-body">
+      <div class="row container-filters">
+        <div class="col-md-2">
+          <h3 class="filters-title">Filter by type: </h3>
+        </div>
+        <div class="col-md-4">
+          <p>liste des types</p>
+        </div>
+      </div>
+      <div class="row container-pokemons">
+        <div class="table-responsive">
+          <table class="table" *ngIf="pokemons.length">
+            <thead>
+              <tr>
+                <th>Pokedex ID</th>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Weight</th>
+                <th>Basic stats</th>
+                <th>Types</th>
+                <th>Skills</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="pokemon-container" *ngFor="let pokemon of filteredPokemons">
+                <td>{{pokemon.pokedex_id}}</td>
+                <td>{{pokemon.name}}</td>
+                <td>{{pokemon.size}}</td>
+                <td>{{pokemon.weight}}</td>
+                <td>{{pokemon.basic_stats}}</td>
+                <td>
+                  <span class="badge bg-success" *ngFor="let type of pokemon.types">
+                    {{type.name}}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge bg-primary" *ngFor="let skill of pokemon.skills">
+                    {{skill.name}}
+                  </span>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Show
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

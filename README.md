@@ -33,7 +33,7 @@ pip install -r .\requirements.txt
 ```
 4. Lancement de l'API
 ```bash
- uvicorn app.main:app --reaload
+ uvicorn app.main:app
 ```
 
 ## Base de données
