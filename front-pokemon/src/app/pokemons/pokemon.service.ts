@@ -18,6 +18,7 @@ export class PokemonService {
       catchError(this.handleError)
     )
   }
+
   private handleError(err: HttpErrorResponse): Observable<never>{
     let errorMessage: string = "";
     if (err.error instanceof ErrorEvent){

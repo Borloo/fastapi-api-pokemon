@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from "rxjs";
+import {last, Subscription} from "rxjs";
 import {PokemonService} from "./pokemon.service";
 import {Pokemon} from "../models/pokemon";
 
@@ -33,4 +33,5 @@ export class PokemonsComponent implements OnInit, OnDestroy{
     this.filteredPokemons = this.pokemons;
   }
 
+  protected readonly last = last;
 }
