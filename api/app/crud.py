@@ -14,7 +14,7 @@ def get_type_by_name(db: Session, name_type: str):
     return db.query(models.Type).filter(models.Type.name == name_type).first()
 
 
-def get_types(db: Session, skip: int = 0, limit: int = 10):
+def get_types(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Type).offset(skip).limit(limit).all()
 
 

@@ -1,1 +1,69 @@
-<p>pokemon works!</p>
+<div class="modal-dialog modal-dialog-scrollable">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="container-types-skills">
+        <h1 class="modal-title fs-5">{{pokemon.name}} - #{{pokemon.pokedex_id}}</h1>
+        <div class="types">
+          <span class="badge bg-success" *ngFor="let type of pokemon.types">
+            {{type.name}}
+          </span>
+        </div>
+        <div class="skills">
+          <span class="badge bg-primary" *ngFor="let skill of pokemon.skills">
+            {{skill.name}}
+          </span>
+        </div>
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <img src="./assets/images/{{pokemon.image}}" alt="{{pokemon.name}}">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Size (cm)</th>
+              <th>Weight (kg)</th>
+              <th>Basic stats</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{pokemon.size}}</td>
+              <td>{{pokemon.weight}}</td>
+              <td>{{pokemon.basic_stats}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h4>Skills</h4>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Power</th>
+              <th>Accuracy</th>
+              <th>Life maw</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let skill of pokemon.skills">
+              <td>{{skill.name}}</td>
+              <td>{{skill.description}}</td>
+              <td>{{skill.power}}</td>
+              <td>{{skill.accurency}}</td>
+              <td>{{skill.life_max}}</td>
+              <td><span class="badge bg-success">{{skill.type_name}}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
