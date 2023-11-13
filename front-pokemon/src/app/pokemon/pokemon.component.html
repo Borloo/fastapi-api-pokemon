@@ -17,24 +17,28 @@
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
-      <img src="./assets/images/{{pokemon.image}}" alt="{{pokemon.name}}">
+      <div class="container-fluid center">
+        <img src="./assets/images/{{pokemon.image}}" alt="{{pokemon.name}}">
+      </div>
       <div class="table-responsive">
-        <table class="table">
-          <thead>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
             <tr>
               <th>Size (cm)</th>
               <th>Weight (kg)</th>
               <th>Basic stats</th>
             </tr>
-          </thead>
-          <tbody>
+            </thead>
+            <tbody>
             <tr>
               <td>{{pokemon.size}}</td>
               <td>{{pokemon.weight}}</td>
               <td>{{pokemon.basic_stats}}</td>
             </tr>
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
       </div>
       <h4>Skills</h4>
       <div class="table-responsive">
