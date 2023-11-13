@@ -1,0 +1,27 @@
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  .container-types-skills {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn-close{
+    align-self: normal;
+    margin-top: -5px;
+  }
+}
+.modal-body{
+  margin-left: auto;
+  margin-right: auto;
+}
+img{
+  width: 250px;
+  height: 250px;
+}
+.center{
+  text-align: center;
+}

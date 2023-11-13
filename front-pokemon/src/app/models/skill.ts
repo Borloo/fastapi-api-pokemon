@@ -4,6 +4,6 @@ export interface Skill{
   description: string;
   power: number;
   accurency: number;
-  lifeMax: number;
-  typeName: string;
+  life_max: number;
+  type_name: string;
 }

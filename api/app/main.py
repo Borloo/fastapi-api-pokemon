@@ -35,7 +35,7 @@ def get_type_by_id(id_type: int, db: Session = Depends(get_db)):
 
 
 @app.post("/api/types/", response_model=schemas.Type)
-def create_type(type: schemas.TypeCreate, db: Session = Depends(get_db)):
+def create_type_route(type: schemas.TypeCreate, db: Session = Depends(get_db)):
     db_type = crud.get_type_by_name(db, type.name)
     if db_type:
         raise HTTPException(status_code=400, detail='Type already exist')

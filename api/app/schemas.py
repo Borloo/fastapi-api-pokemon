@@ -8,7 +8,7 @@ class TypeBase(BaseModel):
 
 
 class TypeCreate(TypeBase):
-    pass
+    name: str
 
 
 class Type(TypeBase):
