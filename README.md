@@ -70,7 +70,7 @@ Voici le [lien](https://chrome.google.com/webstore/detail/allow-cors-access-cont
 
 ## Base de données
 
-![Schemas BD](./assets/BD schemas.png)
+<img src="./assets/BD schemas.png" alt="BD schemas">
 
 1. Type
 ```sql
