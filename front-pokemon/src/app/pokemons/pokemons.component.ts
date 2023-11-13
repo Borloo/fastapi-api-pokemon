@@ -1,7 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {last, Subscription} from "rxjs";
-import {PokemonService} from "./pokemon.service";
+import {PokemonService} from "../pokemon/pokemon.service";
 import {Pokemon} from "../models/pokemon";
+import {Type} from "../models/type";
 
 @Component({
   selector: 'app-pokemons',
@@ -15,6 +16,8 @@ export class PokemonsComponent implements OnInit, OnDestroy{
 
   pokemons: Pokemon[] = [];
   filteredPokemons: Pokemon[] = [];
+
+  pokemon!: Pokemon;
 
   constructor(private pokemonService: PokemonService) { }
 
@@ -33,5 +36,7 @@ export class PokemonsComponent implements OnInit, OnDestroy{
     this.filteredPokemons = this.pokemons;
   }
 
-  protected readonly last = last;
+  setPokemon(pokemon: Pokemon): void{
+    this.pokemon = pokemon;
+  }
 }
