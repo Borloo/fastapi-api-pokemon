@@ -1,10 +1,8 @@
 # fastapi-api-pokemon
 
-Dans le cadre de mon Master en Chef de Projet Ingénierie Logicielle, j'ai entrepris la création d'une API basée sur 
-Python. Ce projet s'articule autour de l'univers Pokémon, avec des tables principales telles que Pokémon, Compétences 
-(Skills) et Types, ainsi que des tables de jointure (pokemons_types et pokemons_skills). Pour mener à bien ce projet, 
-j'ai choisi FASTAPI en raison de sa simplicité d'utilisation et de sa documentation exhaustive. Cette technologie 
-facilite grandement le développement de l'API.
+Ce projet englobe une application API REST et une application Angular conçue pour répertorier des Pokémon et afficher 
+leurs détails. L'API fournit des fonctionnalités CRUD permettant de paramétrer les Pokémon. Réalisé dans le cadre du 
+module Python de ma formation, ce projet se décompose en plusieurs sections expliquées ci-dessous.
 
 ## Outils et technos utilisées
 
@@ -15,28 +13,64 @@ facilite grandement le développement de l'API.
 - GitKraken : Client Git qui facilite le versioning
 - Postman : Outils de tests d'API
 - DB Brower : Logiciel de gestion de base de données SQLite
+- Angular : Framework TypeScript facile à initialiser
 
 ## Installation en local
 
-1. Clonage du répertoire
+### Repository
+
+Clonage du répertoire
 ```bash
 git clone https://github.com/Borloo/fastapi-api-pokemon
 ```
-2. Configuration de l'environnement vituel
+
+### API
+
+#### Pré-requis
+
+- Python
+
+1. Configuration de l'environnement vituel
 ```bash
+cd api
 python -m venv app-venv
-.\app-venv\Scripts\activate
+app-venv\Scripts\activate
 ```
-3. Installation des dépendances
+2. Installation des dépendances
 ```bash
 pip install -r .\requirements.txt
 ```
-4. Lancement de l'API
+3.  Lancement de l'API
 ```bash
- uvicorn app.main:app
+uvicorn app.main:app
 ```
 
+### Front
+
+#### Pré-requis
+
+- Node.js
+
+1. Installation des dépendances
+```bash
+cd fastapi-api-python\front-pokemon
+npm install
+```
+
+2. Lancer le serveur en local
+```bash
+ng serve 
+```
+
+### Extension Chrome
+
+Pour assurer la communication entre l'API et le Frontend, une extension Chrome est requise. Cette extension permet 
+d'autoriser les requêtes locales sur le navigateur.<br>
+Voici le [lien](https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf)
+
 ## Base de données
+
+![Schemas BD](./assets/BD schemas.png)
 
 1. Type
 ```sql
@@ -98,6 +132,8 @@ CREATE TABLE "pokemons_skills" (
 ```
 
 ## L'implémentation
+
+### API
 
 *Exemple avec l'entité Pokemon*
 
@@ -239,9 +275,207 @@ def update_pokemon(pokedex_id: int, pokemon: schemas.PokemonCreate, db: Session 
     raise HTTPException(status_code=404, detail="Pokemon not found")
 ```
 
+### Front
+
+1. Models
+```typescript
+export interface Type {
+  id: number;
+  name: string;
+}
+export interface Skill{
+  id: number;
+  name: string;
+  description: string;
+  power: number;
+  accurency: number;
+  life_max: number;
+  type_name: string;
+}
+export interface Pokemon{
+  pokedex_id: number;
+  name: string;
+  size: number;
+  weight: number;
+  basic_stats: number;
+  image: string;
+  types: Type[];
+  skills: Skill[];
+}
+```
+
+1. pokemon.service.ts
+```typescript
+export class PokemonService {
+
+  private pokemonsUrl: string = "http://localhost:8000/api/pokemons";
+
+  constructor(private http: HttpClient) { }
+
+  getPokemons(): Observable<Pokemon[]> {
+    return this.http.get<Pokemon[]>(this.pokemonsUrl).pipe(
+      tap(data => console.log('All', JSON.stringify(data))),
+      catchError(this.handleError)
+    )
+  }
+
+  private handleError(err: HttpErrorResponse): Observable<never>{
+    let errorMessage: string = "";
+    if (err.error instanceof ErrorEvent){
+      errorMessage = `Server return code ${err.status}, error message is: ${err.message}`;
+    }
+    console.error(errorMessage)
+    return throwError(() => errorMessage);
+  }
+}
+```
+
+2. pokemons.component.ts
+```typescript
+export class PokemonsComponent implements OnInit, OnDestroy{
+
+  errorMessage: string = '';
+  sub!: Subscription;
+
+  pokemons: Pokemon[] = [];
+
+  pokemon!: Pokemon;
+
+  constructor(private pokemonService: PokemonService) { }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    this.sub = this.pokemonService.getPokemons().subscribe({
+      next: pokemons => {
+        this.pokemons = pokemons;
+      },
+      error: err => this.errorMessage = err
+    });
+  }
+
+  setPokemon(pokemon: Pokemon): void{
+    this.pokemon = pokemon;
+  }
+}
+```
+
+3. pokemons.component.html
+```html
+...
+<table class="table" *ngIf="pokemons.length">
+<thead>
+  <tr>
+    <th>Pokedex ID</th>
+    <th>Name</th>
+    <th>Size (cm)</th>
+    <th>Weight (kg)</th>
+    <th>Basic stats</th>
+    <th>Types</th>
+    <th>Skills</th>
+    <th>Actions</th>
+  </tr>
+</thead>
+<tbody>
+  <tr class="pokemon-container" *ngFor="let pokemon of pokemons">
+    <td>{{pokemon.pokedex_id}}</td>
+    <td>{{pokemon.name}}</td>
+    <td>{{pokemon.size}}</td>
+    <td>{{pokemon.weight}}</td>
+    <td>{{pokemon.basic_stats}}</td>
+    <td>
+      <span class="badge bg-success" *ngFor="let type of pokemon.types">
+        {{type.name}}
+      </span>
+    </td>
+    <td>
+      <span class="badge bg-primary" *ngFor="let skill of pokemon.skills">
+        {{skill.name}}
+      </span>
+    </td>
+    <td>
+      <button (click)="setPokemon(pokemon)" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Show
+      </button>
+    </td>
+  </tr>
+</tbody>
+</table>
+...
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <app-pokemon [pokemon]="pokemon"></app-pokemon>
+</div>
+```
+
+4. pokemon.component.ts
+```typescript
+export class PokemonComponent {
+  @Input() pokemon!: Pokemon;
+
+}
+```
+
+5. pokemon.component.html
+```html
+...
+  <div class="container-fluid center">
+    <img src="./assets/images/{{pokemon.image}}" alt="{{pokemon.name}}">
+  </div>
+  <div class="table-responsive">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Size (cm)</th>
+          <th>Weight (kg)</th>
+          <th>Basic stats</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{{pokemon.size}}</td>
+          <td>{{pokemon.weight}}</td>
+          <td>{{pokemon.basic_stats}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h4>Skills</h4>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Power</th>
+          <th>Accuracy</th>
+          <th>Life maw</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let skill of pokemon.skills">
+          <td>{{skill.name}}</td>
+          <td>{{skill.description}}</td>
+          <td>{{skill.power}}</td>
+          <td>{{skill.accurency}}</td>
+          <td>{{skill.life_max}}</td>
+          <td><span class="badge bg-success">{{skill.type_name}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+...
+```
+
 ## Tester l'API
 
 Comme présenter au début, pour tester ce projet il est possible d'utiliser Postman, un outil très pratique qui permet d'essayer les différentes requêtes.<br>
 Vous trouverez ici la [documentation de l'API Pokemon](https://documenter.getpostman.com/view/30768194/2s9YXfcih5)
+
+Sinon directement en lancant le front de l'application qui permet de visualiser les pokemons.
 
 Maxime Etcheverria

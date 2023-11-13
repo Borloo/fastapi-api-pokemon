@@ -15,7 +15,6 @@ export class PokemonsComponent implements OnInit, OnDestroy{
   sub!: Subscription;
 
   pokemons: Pokemon[] = [];
-  filteredPokemons: Pokemon[] = [];
 
   pokemon!: Pokemon;
 
@@ -29,11 +28,9 @@ export class PokemonsComponent implements OnInit, OnDestroy{
     this.sub = this.pokemonService.getPokemons().subscribe({
       next: pokemons => {
         this.pokemons = pokemons;
-        this.filteredPokemons = pokemons;
       },
       error: err => this.errorMessage = err
     });
-    this.filteredPokemons = this.pokemons;
   }
 
   setPokemon(pokemon: Pokemon): void{
